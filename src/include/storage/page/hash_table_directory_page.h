@@ -188,7 +188,6 @@ class HashTableDirectoryPage {
 
   bool CanIncrGlobalDepth();
 
-
  private:
   page_id_t page_id_;
   lsn_t lsn_;

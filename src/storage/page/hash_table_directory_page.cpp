@@ -39,11 +39,7 @@ void HashTableDirectoryPage::IncrGlobalDepth() {
 }
 /** ADD **/
 bool HashTableDirectoryPage::CanIncrGlobalDepth() {
-  if ((0x1 << (global_depth_ + 1)) <= DIRECTORY_ARRAY_SIZE) {
-    return true;
-  } else {
-    return false;
-  }
+  return ((0x1 << (global_depth_ + 1)) <= DIRECTORY_ARRAY_SIZE);
 }
 void HashTableDirectoryPage::DecrGlobalDepth() { global_depth_--; }
 
