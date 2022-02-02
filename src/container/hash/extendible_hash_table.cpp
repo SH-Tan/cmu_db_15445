@@ -161,14 +161,15 @@ bool HASH_TABLE_TYPE::SplitInsert(Transaction *transaction, const KeyType &key, 
   if (dir_page->GetLocalDepth(bucket_id) < dir_page->GetGlobalDepth()) {
     page_id_t new_bucket_page_id;
     HASH_TABLE_BUCKET_TYPE *new_bucket_page = reinterpret_cast<HASH_TABLE_BUCKET_TYPE *>(
-        buffer_pool_manager_->NewPage(&new_bucket_page_id, nullptr)->GetData());
+      buffer_pool_manager_->NewPage(&new_bucket_page_id, nullptr)->GetData());
     uint32_t locale_hight_bit = 0x1 << dir_page->GetLocalDepth(bucket_id);
     uint32_t shared_bit = bucket_id & (locale_hight_bit - 1);
     uint32_t current_bucket_size = dir_page->Size();
     for (uint32_t temp_bucket_id = shared_bit; temp_bucket_id < current_bucket_size;
         temp_bucket_id += locale_hight_bit) {
-        dir_page->SetBucketPageId(temp_bucket_id, new_bucket_page_id);
-      }
+          if ((temp_bucket_id & locale_hight_bit) != 0) {
+            dir_page->SetBucketPageId(temp_bucket_id, new_bucket_page_id);
+          }
       dir_page->IncrLocalDepth(temp_bucket_id);
     }
     // flash
@@ -186,7 +187,7 @@ bool HASH_TABLE_TYPE::SplitInsert(Transaction *transaction, const KeyType &key, 
     }
     buffer_pool_manager_->UnpinPage(new_bucket_page_id, true, nullptr);
   }
-  table_latch_.WUnlock();
+  // table_latch_.WUnlock();
   buffer_pool_manager_->UnpinPage(directory_page_id_, true, nullptr);
   buffer_pool_manager_->UnpinPage(bucket_page_id, true, nullptr);
   return Insert(transaction, key, value);
