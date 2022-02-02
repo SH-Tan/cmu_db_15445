@@ -186,9 +186,8 @@ class HashTableDirectoryPage {
    */
   void PrintDirectory();
 
-  bool CanIncrGlobalDepth()；
+  bool CanIncrGlobalDepth();
 
-  bool CanShrink();
 
  private:
   page_id_t page_id_;

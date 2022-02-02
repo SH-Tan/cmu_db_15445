@@ -123,6 +123,8 @@ class HashTableBucketPage {
    */
   uint32_t NumReadable();
 
+  uint32_t GetOccupiedSize() const;
+
   /**
    * @return whether the bucket is full
    */
@@ -138,7 +140,7 @@ class HashTableBucketPage {
    */
   void PrintBucket();
 
-  uint32_t GetOccupiedSize()
+  
 
  private:
   // For more on BUCKET_ARRAY_SIZE see storage/page/hash_table_page_defs.h
