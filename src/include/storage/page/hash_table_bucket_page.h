@@ -123,7 +123,7 @@ class HashTableBucketPage {
    */
   uint32_t NumReadable();
 
-  uint32_t GetOccupiedSize() const;
+  // uint32_t GetOccupiedSize() const;
 
   /**
    * @return whether the bucket is full

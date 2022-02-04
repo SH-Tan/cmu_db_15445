@@ -15,13 +15,13 @@
 #include <cassert>
 #include <climits>
 #include <cstdlib>
+#include <mutex>
 #include <string>
 
 #include "storage/index/generic_key.h"
 #include "storage/page/hash_table_page_defs.h"
 
 namespace bustub {
-
 /**
  *
  * Directory Page for extendible hash table.
@@ -119,6 +119,12 @@ class HashTableDirectoryPage {
   void IncrGlobalDepth();
 
   /**
+   * Increment the global depth of the directory
+   * @return true if it can Increment the global depth of the directory and imple, false
+   */
+  bool CanIncrGlobalDepth();
+
+  /**
    * Decrement the global depth of the directory
    */
   void DecrGlobalDepth();
@@ -186,12 +192,11 @@ class HashTableDirectoryPage {
    */
   void PrintDirectory();
 
-  bool CanIncrGlobalDepth();
-
  private:
   page_id_t page_id_;
   lsn_t lsn_;
   uint32_t global_depth_{0};
+  uint32_t mask_{0};
   uint8_t local_depths_[DIRECTORY_ARRAY_SIZE];
   page_id_t bucket_page_ids_[DIRECTORY_ARRAY_SIZE];
 };
