@@ -34,13 +34,17 @@ uint32_t HashTableDirectoryPage::GetGlobalDepthMask() {
   return mask;
 }
 void HashTableDirectoryPage::IncrGlobalDepth() {
-  /** TODO **/
+  int origin_num = 1 << global_depth_;
+  int new_index = origin_num;
+  int origin_index = 0;
+  for (; origin_index < origin_num; new_index++, origin_index++) {
+    bucket_page_ids_[new_index] = bucket_page_ids_[origin_index];
+    local_depths_[new_index] = local_depths_[origin_index];
+  }
   global_depth_++;
 }
 /** ADD **/
-bool HashTableDirectoryPage::CanIncrGlobalDepth() {
-  return ((0x1 << (global_depth_ + 1)) <= DIRECTORY_ARRAY_SIZE);
-}
+bool HashTableDirectoryPage::CanIncrGlobalDepth() { return ((0x1 << (global_depth_ + 1)) <= DIRECTORY_ARRAY_SIZE); }
 void HashTableDirectoryPage::DecrGlobalDepth() { global_depth_--; }
 
 page_id_t HashTableDirectoryPage::GetBucketPageId(uint32_t bucket_idx) {
