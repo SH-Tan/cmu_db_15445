@@ -80,7 +80,7 @@ bool BufferPoolManagerInstance::FindVictimPage(frame_id_t *frame_id) {
 
 bool BufferPoolManagerInstance::FlushPgImp(page_id_t page_id) {
   // Make sure you call DiskManager::WritePage!
-  std::unique_lock<std::mutex> lck(latch_);
+  std::lock_guard<std::mutex> lck(latch_);
   if (page_id == INVALID_PAGE_ID) {
     return false;
   }
@@ -98,7 +98,7 @@ bool BufferPoolManagerInstance::FlushPgImp(page_id_t page_id) {
 
 void BufferPoolManagerInstance::FlushAllPgsImp() {
   // You can do it!
-  std::unique_lock<std::mutex> lck(latch_);
+  std::lock_guard<std::mutex> lck(latch_);
   for (size_t i = 0; i < pool_size_; ++i) {
     Page *page = &pages_[i];
     if (page->page_id_ != INVALID_PAGE_ID && page->IsDirty()) {
@@ -114,8 +114,8 @@ Page *BufferPoolManagerInstance::NewPgImp(page_id_t *page_id) {
   // 2.   Pick a victim page P from either the free list or the replacer. Always pick from the free list first.
   // 3.   Update P's metadata, zero out memory and add P to the page table.
   // 4.   Set the page ID output parameter. Return a pointer to P.
-  std::unique_lock<std::mutex> lck(latch_);
 
+  std::lock_guard<std::mutex> lck(latch_);
   bool all_pinned = true;
   for (size_t i = 0; i < pool_size_; ++i) {
     if (pages_[i].pin_count_ <= 0) {
@@ -148,7 +148,7 @@ Page *BufferPoolManagerInstance::FetchPgImp(page_id_t page_id) {
   // 2.     If R is dirty, write it back to the disk.
   // 3.     Delete R from the page table and insert P.
   // 4.     Update P's metadata, read in the page content from disk, and then return a pointer to P.
-  std::unique_lock<std::mutex> lck(latch_);
+  std::lock_guard<std::mutex> lck(latch_);
   Page *tar = nullptr;
   auto iter = page_table_.find(page_id);
 
@@ -180,7 +180,7 @@ bool BufferPoolManagerInstance::DeletePgImp(page_id_t page_id) {
   // 1.   If P does not exist, return true.
   // 2.   If P exists, but has a non-zero pin-count, return false. Someone is using the page.
   // 3.   Otherwise, P can be deleted. Remove P from the page table, reset its metadata and return it to the free list.
-  std::unique_lock<std::mutex> lck(latch_);
+  std::lock_guard<std::mutex> lck(latch_);
   auto iter = page_table_.find(page_id);
   if (iter == page_table_.end()) {
     return true;
@@ -198,7 +198,7 @@ bool BufferPoolManagerInstance::DeletePgImp(page_id_t page_id) {
 }
 
 bool BufferPoolManagerInstance::UnpinPgImp(page_id_t page_id, bool is_dirty) {
-  std::unique_lock<std::mutex> lck(latch_);
+  std::lock_guard<std::mutex> lck(latch_);
   auto iter = page_table_.find(page_id);
   if (iter == page_table_.end()) {
     return false;

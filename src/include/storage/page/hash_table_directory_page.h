@@ -191,6 +191,8 @@ class HashTableDirectoryPage {
    * Prints the current directory
    */
   void PrintDirectory();
+  
+  void Init(page_id_t directory_page_id, page_id_t bucket_page_id);
 
  private:
   page_id_t page_id_;
