@@ -57,7 +57,7 @@ void HashTableDirectoryPage::Init(page_id_t directory_page_id, page_id_t bucket_
   }
 }
 
-void HashTableDirectoryPage::IncrGlobalDepth() { 
+void HashTableDirectoryPage::IncrGlobalDepth() {
   int origin_num = 1 << global_depth_;
   int new_index = origin_num;
   int origin_index = 0;
@@ -65,7 +65,7 @@ void HashTableDirectoryPage::IncrGlobalDepth() {
     bucket_page_ids_[new_index] = bucket_page_ids_[origin_index];
     local_depths_[new_index] = local_depths_[origin_index];
   }
-  global_depth_++; 
+  global_depth_++;
 }
 
 /** ADD **/

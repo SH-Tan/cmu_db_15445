@@ -22,7 +22,7 @@ namespace bustub {
 template <typename KeyType, typename ValueType, typename KeyComparator>
 bool HASH_TABLE_BUCKET_TYPE::GetValue(KeyType key, KeyComparator cmp, std::vector<ValueType> *result) {
   /** TODO **/
-  for (size_t bucket_idx = 0; bucket_idx < BUCKET_ARRAY_SIZE; ++bucket_idx) {  
+  for (size_t bucket_idx = 0; bucket_idx < BUCKET_ARRAY_SIZE; ++bucket_idx) {
     if (IsReadable(bucket_idx) && cmp(key, KeyAt(bucket_idx)) == 0) {
       (*result).push_back(ValueAt(bucket_idx));
     }
