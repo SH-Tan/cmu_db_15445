@@ -15,11 +15,13 @@
 #include <algorithm>
 #include <condition_variable>  // NOLINT
 #include <list>
+#include <fstream>
 #include <memory>
 #include <mutex>  // NOLINT
 #include <unordered_map>
 #include <utility>
 #include <vector>
+#include <string>
 
 #include "common/config.h"
 #include "common/rid.h"
@@ -109,6 +111,9 @@ class LockManager {
 
   /** Lock table for lock requests. */
   std::unordered_map<RID, LockRequestQueue> lock_table_;
+  bool NeedWait(Transaction *txn, LockRequestQueue *lock_queue);
+  bool NeedWaitUpdate(Transaction *txn, LockRequestQueue *lock_queue);
+  bool CheckAbort(Transaction *txn);
 };
 
 }  // namespace bustub

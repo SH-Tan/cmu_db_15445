@@ -10,10 +10,11 @@
 //
 //===----------------------------------------------------------------------===//
 
-#include "concurrency/lock_manager.h"
-
 #include <utility>
 #include <vector>
+
+#include "concurrency/transaction_manager.h"
+#include "concurrency/lock_manager.h"
 
 namespace bustub {
 
