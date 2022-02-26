@@ -14,14 +14,14 @@
 
 #include <algorithm>
 #include <condition_variable>  // NOLINT
-#include <list>
 #include <fstream>
+#include <list>
 #include <memory>
 #include <mutex>  // NOLINT
+#include <string>
 #include <unordered_map>
 #include <utility>
 #include <vector>
-#include <string>
 
 #include "common/config.h"
 #include "common/rid.h"
