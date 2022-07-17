@@ -186,10 +186,14 @@ class HashTableDirectoryPage {
    */
   void PrintDirectory();
 
+  void Init(page_id_t directory_page_id, page_id_t bucket_page_id);
+
+  bool CanIncrGlobalDepth();
+
  private:
   page_id_t page_id_;
   lsn_t lsn_;
-  uint32_t global_depth_{0};
+  uint32_t global_depth_;
   uint8_t local_depths_[DIRECTORY_ARRAY_SIZE];
   page_id_t bucket_page_ids_[DIRECTORY_ARRAY_SIZE];
 };
